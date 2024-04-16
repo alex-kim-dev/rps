@@ -2,12 +2,12 @@
 
 ## Requirements
 
-- [ ] supports arbitrary odd number of arbitrary combinations
-- [ ] accepts moves as cli arguments
-  - [ ] >= 3 moves
-  - [ ] odd number of moves
-  - [ ] moves don't repeat
-  - [ ] display a nice error msg if the requirements aren't met
+- [x] supports arbitrary odd number of arbitrary combinations
+- [x] accepts moves as cli arguments
+  - [x] >= 3 moves
+  - [x] odd number of moves
+  - [x] moves don't repeat
+  - [x] display a nice error msg if the requirements aren't met
 - [ ] rules: half of the next moves in the circle wins, half of the previous moves in the circle lose
 - [ ] check that the computer plays fair:
   - [ ] generate cryptographically strong random key (>= 256 bits)
