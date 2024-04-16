@@ -1,0 +1,28 @@
+root: true
+
+extends:
+  - airbnb-base
+  - plugin:@typescript-eslint/recommended
+  - 'plugin:prettier/recommended'
+
+env:
+  es2023: true
+  node: true
+
+parser: '@typescript-eslint/parser'
+
+parserOptions:
+  ecmaVersion: 2023
+  project:
+    - tsconfig.json
+
+settings:
+  import/resolver: typescript
+
+rules:
+  '@typescript-eslint/no-var-requires': off
+  no-console: off
+  import/order:
+    - warn
+    - newlines-between: always
+  import/prefer-default-export: off
