@@ -16,6 +16,6 @@
 - [x] show a list of moves to choose from for the player
 - [x] in case of incorrect input show the list again
 - [x] show who won, the move of the computer and the original key
-- [ ] add help option, which displays a table that determines which move wins (headings, Win/Lose/Draw for cells)
+- [x] add help option, which displays a table that determines which move wins (headings, Win/Lose/Draw for cells)
 - [x] show a link to some service to calc hmac
 - [ ] at least one class for each: table gen, rules, key gen, hmac calc

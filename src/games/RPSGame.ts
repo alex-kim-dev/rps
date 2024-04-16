@@ -13,6 +13,19 @@ export class RPSGame {
     this.#moves = moves;
   }
 
+  /**
+   * @arg i - index of the 1st player move
+   * @arg j - index of the 2nd player move
+   * @arg n - number of moves
+   * @returns -1 for lose, 0 for draw, 1 for win
+   */
+  static getResultFor(i: number, j: number, n: number) {
+    const half = Math.floor(n) / 2;
+    const result = Math.sign(((i - j + half + n) % n) - half);
+    if (result === 0) return 'draw';
+    return result > 0 ? 'win' : 'lose';
+  }
+
   getMoves() {
     return this.#moves;
   }
@@ -29,18 +42,17 @@ export class RPSGame {
     return new HMACGenerator(this.#key).generate(this.#computerMove);
   }
 
-  makePlayerMove(playerMove: string) {
+  makePlayerMove(playerMove: string): {
+    computerMove: string;
+    result: ReturnType<typeof RPSGame.getResultFor>;
+    key: string;
+  } {
     if (!this.#computerMove)
       throw new Error('The player should take their turn after the computer');
 
     const player = this.#moves.findIndex((move) => move === playerMove);
     const comp = this.#moves.findIndex((move) => move === this.#computerMove);
-    const moves = this.#moves.length;
-    const half = Math.floor(moves) / 2;
-
-    const result = Math.sign(
-      ((comp - player + half + moves) % moves) - half,
-    ) as -1 | 0 | 1;
+    const result = RPSGame.getResultFor(comp, player, this.#moves.length);
 
     return { computerMove: this.#computerMove, result, key: this.#key };
   }
