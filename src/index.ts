@@ -1,9 +1,8 @@
 import { program } from 'commander';
 import chalk from 'chalk';
+import { select } from '@inquirer/prompts';
 
-import { KeyGenerator } from '~/lib/keyGenerator.ts';
-import { HMACGenerator } from '~/lib/HMACGenerator.ts';
-import { genRandomInRange } from '~/lib/utils.ts';
+import { RPSGame } from '~/games/RPSGame.ts';
 
 program
   .name('rps')
@@ -27,8 +26,30 @@ if (new Set(moves).size !== moves.length) {
   program.error(chalk.red('error: moves must be unique'));
 }
 
-const key = new KeyGenerator().generate();
-const randomIndex = genRandomInRange(0, moves.length);
-const computerMove = moves[randomIndex] as string;
-const hmac = new HMACGenerator(key).generate(computerMove);
-console.log(chalk.bgGray(`HMAC: ${hmac}`));
+const game = new RPSGame(moves);
+const hmac = game.makeComputerMove();
+
+console.log(chalk.gray(`HMAC: ${hmac}\n`));
+
+const playerMove = await select({
+  message: 'Player move:',
+  choices: moves.map((move) => ({ name: move, value: move })),
+});
+const { computerMove, result, key } = game.makePlayerMove(playerMove);
+
+console.log(chalk.bold(`Computer move: ${computerMove}`));
+
+const displayVariants = {
+  '-1': ['bgRed', 'You lose!'],
+  0: ['bgWhite', 'Draw!'],
+  1: ['bgGreen', 'You win!'],
+} as const;
+const [bg, msg] = displayVariants[result];
+
+console.log(chalk[bg](msg));
+console.log(chalk.gray(`\nHMAC key: ${key}`));
+console.log(
+  chalk.italic.gray(
+    'To verify HMAC visit: https://www.liavaag.org/English/SHA-Generator/HMAC/',
+  ),
+);
