@@ -1,9 +1,11 @@
 import { program } from 'commander';
 import chalk from 'chalk';
-import { select } from '@inquirer/prompts';
-import Table from 'cli-table3';
 
 import { RPSGame } from '~/games/RPSGame.ts';
+import { cli } from '~/ui/cli.ts';
+
+const HMAC_VERIFY_WEBSITE =
+  'https://www.liavaag.org/English/SHA-Generator/HMAC/';
 
 program
   .name('rps')
@@ -18,24 +20,10 @@ program
     if (moves.length >= 3 && moves.length % 2 === 0)
       return `${heading}• the number of moves must be odd`;
 
-    const table = new Table({
-      head: ['v pc\\user >'].concat(moves),
-    });
-
-    table.push(
-      ...moves.map((move, i) => ({
-        [chalk.blue(move)]: Array.from({ length: moves.length }).map((_, j) =>
-          RPSGame.getResultFor(i, j, moves.length),
-        ),
-      })),
-    );
-
-    return `${heading}${table}`;
+    return `${heading}${cli.genResultTable(moves)}`;
   });
 
-program.parse();
-
-const moves = program.args;
+const moves = program.parse().args;
 
 if (moves.length < 3) {
   program.error(chalk.red('error: there must be at least 3 moves'));
@@ -52,27 +40,11 @@ if (new Set(moves).size !== moves.length) {
 const game = new RPSGame(moves);
 const hmac = game.makeComputerMove();
 
-console.log(chalk.gray(`HMAC: ${hmac}\n`));
+cli.info(`HMAC: ${hmac}\n`);
 
-const playerMove = await select({
-  message: 'Player move:',
-  choices: moves.map((move) => ({ name: move, value: move })),
-});
+const playerMove = await cli.selectMove(moves);
 const { computerMove, result, key } = game.makePlayerMove(playerMove);
 
-console.log(chalk.bold(`Computer move: ${computerMove}`));
-
-const displayVariants = {
-  lose: ['bgRed', 'You lose!'],
-  draw: ['bgWhite', 'Draw!'],
-  win: ['bgGreen', 'You win!'],
-} as const;
-const [bg, msg] = displayVariants[result];
-
-console.log(chalk[bg](msg));
-console.log(chalk.gray(`\nHMAC key: ${key}`));
-console.log(
-  chalk.italic.gray(
-    'To verify HMAC visit: https://www.liavaag.org/English/SHA-Generator/HMAC/',
-  ),
-);
+cli.bold(`Computer move: ${computerMove}`);
+cli.showResult(result);
+cli.info(`\nHMAC key: ${key}`, `To verify HMAC visit: ${HMAC_VERIFY_WEBSITE}`);

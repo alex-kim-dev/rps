@@ -2,6 +2,8 @@ import { KeyGenerator } from '~/lib/keyGenerator.ts';
 import { HMACGenerator } from '~/lib/HMACGenerator.ts';
 import { genRandomInRange } from '~/lib/utils.ts';
 
+export type Result = 'win' | 'draw' | 'lose';
+
 export class RPSGame {
   #key: string = new KeyGenerator().generate();
 
@@ -19,7 +21,7 @@ export class RPSGame {
    * @arg n - number of moves
    * @returns -1 for lose, 0 for draw, 1 for win
    */
-  static getResultFor(i: number, j: number, n: number) {
+  static getResultFor(i: number, j: number, n: number): Result {
     const half = Math.floor(n) / 2;
     const result = Math.sign(((i - j + half + n) % n) - half);
     if (result === 0) return 'draw';
@@ -28,11 +30,6 @@ export class RPSGame {
 
   getMoves() {
     return this.#moves;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  getOutcomes() {
-    return [[]];
   }
 
   /** @returns HMAC of the computer move */

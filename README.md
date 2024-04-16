@@ -18,4 +18,4 @@
 - [x] show who won, the move of the computer and the original key
 - [x] add help option, which displays a table that determines which move wins (headings, Win/Lose/Draw for cells)
 - [x] show a link to some service to calc hmac
-- [ ] at least one class for each: table gen, rules, key gen, hmac calc
+- [x] at least one class for each: table gen, rules, key gen, hmac calc
