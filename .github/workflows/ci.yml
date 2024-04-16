@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['*.md', LICENSE, .gitignore, .husky/**]
+  pull_request:
+    branches: [main]
+    paths-ignore: ['*.md', LICENSE, .gitignore, .husky/**]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+env:
+  HUSKY: 0
+  NODE_VERSION: 20
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install
+        id: install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format
+        if: always() && steps.install.outcome == 'success'
+        run: npm run format
+
+      - name: Typecheck
+        if: always() && steps.install.outcome == 'success'
+        run: npm run typecheck
