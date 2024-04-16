@@ -1,6 +1,10 @@
 import { program } from 'commander';
 import chalk from 'chalk';
 
+import { KeyGenerator } from '~/lib/keyGenerator.ts';
+import { HMACGenerator } from '~/lib/HMACGenerator.ts';
+import { genRandomInRange } from '~/lib/utils.ts';
+
 program
   .name('rps')
   .description('Generalized rock-paper-scissors cli game')
@@ -23,4 +27,8 @@ if (new Set(moves).size !== moves.length) {
   program.error(chalk.red('error: moves must be unique'));
 }
 
-console.log(`Passed moves: ${moves}`);
+const key = new KeyGenerator().generate();
+const randomIndex = genRandomInRange(0, moves.length);
+const computerMove = moves[randomIndex] as string;
+const hmac = new HMACGenerator(key).generate(computerMove);
+console.log(chalk.bgGray(`HMAC: ${hmac}`));
