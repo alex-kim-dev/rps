@@ -1,4 +1,30 @@
+[![CI](https://github.com/alex-kim-dev/rps/actions/workflows/ci.yml/badge.svg)](https://github.com/alex-kim-dev/rps/actions/workflows/ci.yml)
+
 # Generalized rock-paper-scissors cli game
+
+**How to use:**
+
+```sh
+npm start rock paper scissors lizard spock
+```
+
+```sh
+npm start -- --help
+
+> rps@1.0.0-alpha.0 start
+> tsx src/index.ts -h
+
+Usage: rps [options] <moves...>
+
+Generalized rock-paper-scissors cli game
+
+Arguments:
+  moves          odd number >=3 of unique moves (labels)
+
+Options:
+  -V, --version  output the version number
+  -h, --help     display help for command
+```
 
 ## Requirements
 
