@@ -2,6 +2,8 @@
 
 # Generalized rock-paper-scissors cli game
 
+https://github.com/alex-kim-dev/rps/assets/45559664/f63272c9-82c5-4b66-98d8-29f832fca745
+
 **How to use:**
 
 ```sh
