@@ -25,23 +25,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: pnpm
 
       - name: Install
         id: install
-        run: npm ci
+        run: pnpm install
 
       - name: Lint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Format
         if: always() && steps.install.outcome == 'success'
-        run: npm run format
+        run: pnpm run format
 
       - name: Typecheck
         if: always() && steps.install.outcome == 'success'
-        run: npm run typecheck
+        run: pnpm run typecheck
