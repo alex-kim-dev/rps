@@ -1,6 +1,8 @@
 [![CI](https://github.com/alex-kim-dev/rps/actions/workflows/ci.yml/badge.svg)](https://github.com/alex-kim-dev/rps/actions/workflows/ci.yml)
 
-# Generalized rock-paper-scissors cli game
+# Generalized rock-paper-scissors
+
+A generalized rock-paper-scissors CLI game with arbitrary number of moves and confirmation of the computer's move fairness
 
 https://github.com/alex-kim-dev/rps/assets/45559664/f63272c9-82c5-4b66-98d8-29f832fca745
 
